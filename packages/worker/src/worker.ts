@@ -15,8 +15,6 @@ import { Command } from "../../main/src/types";
 
 interface Environment {
   SECRET_TELEGRAM_API_TOKEN: string;
-  SECRET_TELEGRAM_API_TOKEN2: string;
-  SECRET_TELEGRAM_API_TOKEN3: string;
   KV_BOT_STORAGE: KVNamespace;
 }
 
@@ -47,29 +45,6 @@ export default {
         },
         kv: env.KV_BOT_STORAGE,
       },
-      {
-        bot_name: "@duckduckbot",
-        api: TelegramBot,
-        webhook: new TelegramWebhook(new URL(`https://api.telegram.org/bot${env.SECRET_TELEGRAM_API_TOKEN2}`), env.SECRET_TELEGRAM_API_TOKEN2, new URL(new URL(request.url).origin)),
-        commands: {
-          inline: TelegramCommands.duckduckgo as Command, // default inline response
-          "/duckduckgo": TelegramCommands.duckduckgo as Command,
-          "/code": TelegramCommands.code as Command,
-          "/commands": TelegramCommands.commandList as Command,
-          "/start": TelegramCommands.commandList as Command,
-        },
-      },
-      {
-        bot_name: "@ddggbot",
-        api: TelegramBot,
-        webhook: new TelegramWebhook(new URL(`https://api.telegram.org/bot${env.SECRET_TELEGRAM_API_TOKEN3}`), env.SECRET_TELEGRAM_API_TOKEN3, new URL(new URL(request.url).origin)),
-        commands: {
-          inline: TelegramCommands.duckduckgo as Command,
-          "/duckduckgo": TelegramCommands.duckduckgo as Command,
-          "/code": TelegramCommands.code as Command,
-          "/commands": TelegramCommands.commandList as Command,
-          "/start": TelegramCommands.commandList as Command,
-        },
       },
     ]).handle(request),
 };
