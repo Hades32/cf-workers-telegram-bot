@@ -7,5 +7,5 @@ compatibility_date = "2023-02-08"
 build.command = "npm install && npm run build:worker"
 
 kv_namespaces = [
-  { binding = "KV_BOT_STORAGE", id = "bot-storage" }
+  { binding = "KV_BOT_STORAGE", id = "b978a8d20fb446568bbeba3c30ffac6d" }
 ]
