@@ -1,35 +1,5 @@
-# cf-workers-telegram-bot
+# 2reMarkable Bot
 
-serverless telegram bot on cf workers
-
-The original `worker.js` is the content of Nikhil John's
-https://github.com/nikhiljohn10/telegram-bot-worker which is licensed with MIT.
-My modifications are licensed under the Apache license.
-
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/codebam/cf-workers-telegram-bot)
-
-To use the deploy button:
-
-- Click the deploy button
-- Navigate to your new **GitHub repository &gt; Settings &gt; Secrets** and add the following secrets:
-
-   ```yaml
-   - Name: CF_API_TOKEN (should be added automatically)
-   - Name: CF_ACCOUNT_ID (should be added automatically)
-
-   - Name: SECRET_TELEGRAM_API_TOKEN
-   - Value: your-telegram-bot-token
-   ```
-
-- Push to `master` to trigger a deploy
-
-To fork this repo and use wrangler:
-
-- Click fork
-- `wrangler secret put SECRET_TELEGRAM_API_TOKEN` and set it to your telegram
-  bot token
-- `wrangler publish`
-- Done!
 
 ## Getting started with cf-workers-telegram-bot
 
