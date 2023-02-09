@@ -62,7 +62,7 @@ export default class TelegramApi extends BotApi {
     args: string[] = []
   ) => {
     log({ execute: { text, args } });
-    const commandLine = text.trimStart().split(/\s*/)
+    const commandLine = text.trimStart().split(/\s+/)
     const command = this.commands[commandLine[0]?.split("@")[0]] ?? this.commands['default'];
     if (!command) {
       log({
