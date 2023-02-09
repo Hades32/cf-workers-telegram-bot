@@ -39,6 +39,7 @@ export default {
         commands: {
           '/ping': TelegramCommands.ping as Command,
           '/start': TelegramCommands.commandList as Command,
+          default: TelegramCommands.defaultCommand as Command,
         },
         kv: env.KV_BOT_STORAGE,
       },
