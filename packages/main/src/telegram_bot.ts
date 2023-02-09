@@ -40,8 +40,8 @@ export default class TelegramBot extends TelegramApi {
           new TelegramInlineQueryResultArticle(url),
         ])) ??
       this.sendMessage(update.message?.chat.id ?? 0, url))(
-      'https://github.com/codebam/cf-workers-telegram-bot'
-    );
+        'https://github.com/codebam/cf-workers-telegram-bot'
+      );
 
   // bot command: /get
   _get = async (update: TelegramUpdate, args: string[]): Promise<Response> =>
@@ -94,12 +94,27 @@ export default class TelegramBot extends TelegramApi {
     );
 
   // bot response for any non-command text
-  defaultCommand = async (update: TelegramUpdate): Promise<Response> =>{
-    const old = await this.kv.get("tmp_cnt")
-    await this.kv.put("tmp_cnt", String(Number(old)+1))
+  defaultCommand = async (update: TelegramUpdate): Promise<Response> => {
+    const snapURL = update.message?.text ?? '';
+    if (!/^http/.test(snapURL)) {
+      const old = await this.kv.get("tmp_cnt")
+      await this.kv.put("tmp_cnt", String(Number(old) + 1))
+      return this.sendMessage(
+        update.message?.chat.id ?? 0,
+        `<b>Please send a URL!</b> ` + old,
+        'HTML'
+      );
+    }
+    const fd = new FormData();
+    fd.set("title", "ePub of " + snapURL)
+    fd.set("url", snapURL)
+    const resp = await fetch("http://dotepub.com/v1/post", {
+      method: "POST",
+      body: fd,
+    })
     return this.sendMessage(
       update.message?.chat.id ?? 0,
-      `<b>Value:</b> `+old,
+      `<b>Resp:</b><br>` + (await resp.text()),
       'HTML'
     );
   }
