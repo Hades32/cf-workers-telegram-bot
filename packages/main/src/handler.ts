@@ -1,7 +1,7 @@
-import BotApi from "./bot_api";
-import Commands from "./commands";
-import { sha256, log } from "./libs";
-import { Config, PartialConfig, Update, Webhook, localhost } from "./types";
+import BotApi from './bot_api';
+import Commands from './commands';
+import { sha256, log } from './libs';
+import { Config, PartialConfig, Update, Webhook, localhost } from './types';
 
 export default class Handler {
   configs: PartialConfig[];
@@ -37,11 +37,11 @@ export default class Handler {
       _bot ??
       new BotApi(
         new Commands(),
-        new Webhook(localhost, "", localhost),
+        new Webhook(localhost, '', localhost),
         new Handler([new Config()])
       );
     if (bot.webhook.token) {
-      const request = _request ?? new Request("");
+      const request = _request ?? new Request('');
       return request
         .json()
         .then((update: unknown) => bot.update(update as Update));
@@ -64,7 +64,7 @@ export default class Handler {
   ): Promise<Record<string, any> | Record<string, never>> =>
     Promise.all(
       configs.map((bot_config: PartialConfig) =>
-        sha256(bot_config.webhook?.token ?? "").then((hash) => [
+        sha256(bot_config.webhook?.token ?? '').then((hash) => [
           hash,
           bot_config,
         ])
@@ -75,13 +75,17 @@ export default class Handler {
   handle = async (request: Request): Promise<Response> =>
     this.getAccessKeys(this.configs).then((access_keys) => {
       if (Object.keys(this.responses).includes(request.method)) {
+        const bot = access_keys[new URL(request.url).pathname.substring(1)];
+        if (!bot) {
+          return new Response(null, { status: 404 });
+        }
         return this.responses[request.method](
           request,
-          new access_keys[new URL(request.url).pathname.substring(1)].api({
+          new bot.api({
             ...new Config(),
             url: new URL(new URL(request.url).origin), // worker url
             handler: this,
-            ...access_keys[new URL(request.url).pathname.substring(1)],
+            ...bot,
           })
         );
       }
