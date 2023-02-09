@@ -70,7 +70,7 @@ export default class TelegramApi extends BotApi {
       })
       return this.updates.default;
     }
-    return command.(this, update, [...text_args, ...args]))
+    return command(this, update, [...commandLine, ...args])
   }
 
   // execute the inline custom bot commands from bot configurations
