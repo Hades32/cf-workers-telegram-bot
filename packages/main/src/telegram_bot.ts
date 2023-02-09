@@ -114,8 +114,7 @@ export default class TelegramBot extends TelegramApi {
     })
     return this.sendMessage(
       update.message?.chat.id ?? 0,
-      `<b>Resp:</b><br>` + (await resp.text()),
-      'HTML'
+      `Response: ` + (await resp.text()),
     );
   }
 
