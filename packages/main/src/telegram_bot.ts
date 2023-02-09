@@ -93,13 +93,15 @@ export default class TelegramBot extends TelegramApi {
       'HTML'
     );
 
-  // bot command: /commandList
-  defaultCommand = async (update: TelegramUpdate): Promise<Response> =>
-    this.sendMessage(
+  // bot response for any non-command text
+  defaultCommand = async (update: TelegramUpdate): Promise<Response> =>{
+    this.kv.
+    return this.sendMessage(
       update.message?.chat.id ?? 0,
       `<pre>${JSON.stringify(Object.keys(this.commands))}</pre>`,
       'HTML'
     );
+  }
 
   // bot command: /toss
   toss = async (update: TelegramUpdate): Promise<Response> =>

@@ -60,24 +60,18 @@ export default class TelegramApi extends BotApi {
     update: TelegramUpdate,
     text: string,
     args: string[] = []
-  ) =>
-    (log({ execute: { text, args } }) &&
-      (async (text_args: string[]) =>
-        ((command) =>
-          ((this.commands[command] ||
-            log({
-              error: `command '${command}' does not exist`,
-            })) &&
-            this.commands[command]?.(this, update, [...text_args, ...args])) ||
-          // run the command
-          this.updates.default)(this.getCommand(text_args)))(
-        // get the command to run
-        text
-          .trimStart()
-          .replace(/^([^\s]*\s)\s*/gm, "$1")
-          .split(" ")
-      )) ??
-    this.updates.default;
+  ) => {
+    log({ execute: { text, args } });
+    const commandLine = text.trimStart().split(/\s*/)
+    const command = this.commands[commandLine[0]?.split("@")[0]] ?? this.commands['default'];
+    if (!command) {
+      log({
+        error: `command '${commandLine[0]}' does not exist`,
+      })
+      return this.updates.default;
+    }
+    return command.(this, update, [...text_args, ...args]))
+  }
 
   // execute the inline custom bot commands from bot configurations
   executeInlineCommand = async (update: TelegramUpdate): Promise<Response> =>
