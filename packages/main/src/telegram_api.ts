@@ -68,7 +68,7 @@ export default class TelegramApi extends BotApi {
       log({
         error: `command '${commandLine[0]}' does not exist`,
       })
-      return this.updates.default;
+      return this.updates.default(update);
     }
     return command(this, update, [...commandLine, ...args])
   }
